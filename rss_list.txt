@@ -1,1 +1,1 @@
-https://rss-sub.20050815.xyz/rss.xml
+https://blog.zhilu.site/atom.xml
