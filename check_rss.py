@@ -109,8 +109,16 @@ def send_email(subject, message):
     msg['Subject'] = subject
     msg.attach(MIMEText(message, 'plain'))
 
-    server = smtplib.SMTP(os.environ['SMTP_SERVER'], os.environ['SMTP_PORT'])
-    server.starttls()
+    smtp_server = os.environ['SMTP_SERVER']
+    smtp_port = int(os.environ['SMTP_PORT'])
+
+    # 端口465使用SSL直连，其他端口（如587）使用STARTTLS
+    if smtp_port == 465:
+        server = smtplib.SMTP_SSL(smtp_server, smtp_port)
+    else:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+
     server.login(os.environ['EMAIL_USER'], os.environ['EMAIL_PASS'])
     server.send_message(msg)
     server.quit()
